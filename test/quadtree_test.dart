@@ -66,10 +66,15 @@ void main(){
     
   });
 }
-
-class AnotherLocationClass implements QuadTreeLocation{
+class QuadTreeLocation implements Location{
   Point location;
-  Point point;
+  QuadTreeLocation( this.location);
+  Point getLocation(){
+    return location;
+  }
+}
+class AnotherLocationClass implements Location{
+  Point location;
   Point getLocation(){
     return location;
   }
