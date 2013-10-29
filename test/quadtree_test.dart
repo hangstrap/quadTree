@@ -52,5 +52,25 @@ void main(){
       });
     });
     
+    group( "Another class inserted in tree", (){
+        test("Use another class that implements the QuadTreeLocation interface", (){
+          AnotherLocationClass location  = new AnotherLocationClass()
+            ..location = new Point( 0, 0);
+          underTest.add( location);
+          
+          List<AnotherLocationClass> found = [];
+          underTest.intersects( quadTreeSize, (e)=> found.add( e));
+          expect( found,contains( location));
+        });
+    });
+    
   });
+}
+
+class AnotherLocationClass implements QuadTreeLocation{
+  Point location;
+  Point point;
+  Point getLocation(){
+    return location;
+  }
 }

@@ -15,11 +15,12 @@ class QuadTreeLocation{
 
 
 class QuadTree{
-  
-  QuadTree(this.range );
-  
-  List<QuadTreeLocation> locations = [];
+
+  List<QuadTreeLocation> locations = [];  
   Rectangle range;
+  int internalSize;
+  
+  QuadTree(this.range, [this.internalSize=10]);
   
   void add( QuadTreeLocation location){
 
