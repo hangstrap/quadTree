@@ -3,20 +3,19 @@ library quadtree;
 import "dart:math";
 
 
-abstract class Location{
-  Point getLocation();
-//  Point point;
-//  
-//  QuadTreeLocation( this.point);
-//  Point getLocation(){
-//    return point;
-//  }
+class Location{
+  Point _point;
+  Location( this._point);
+  Point getLocation(){
+    return _point;
+  }
 }
 
 
 class QuadTree{
 
   List<Location> locations = [];  
+  List<QuadTree> childern = [];
   Rectangle range;
   int internalSize;
   
@@ -25,7 +24,14 @@ class QuadTree{
   void add( Location location){
 
     if( range.containsPoint( location.getLocation())){
-      locations.add( location);
+      if( locations.length < internalSize){
+        locations.add( location);
+      }else{
+        if( childern.isEmpty){
+          _createChildren();
+        }
+        childern.forEach( (e)=> e.add( location));
+      }
     }
   }
   void intersects( Rectangle rectangle, void f(Location location)){
@@ -37,4 +43,22 @@ class QuadTree{
     });
   }
   
+  void _createChildren(){
+  
+    num midpointX = (range.left + range.right) / 2;
+    num midpointY = (range.bottom + range.top) / 2;
+    
+    Point midPoint = new Point( midpointX, midpointY);
+    Point topLeft = range.topLeft;
+    Point topRight = range.topRight;
+    Point bottomLeft = range.bottomLeft;
+    Point bottomRight = range.bottomRight;
+    
+    
+    childern.add(  new QuadTree(  new Rectangle.fromPoints( topLeft, midPoint), internalSize));
+    childern.add(  new QuadTree(  new Rectangle.fromPoints( topRight, midPoint), internalSize));
+    childern.add(  new QuadTree(  new Rectangle.fromPoints( bottomLeft, midPoint), internalSize));
+    childern.add(  new QuadTree(  new Rectangle.fromPoints( bottomRight, midPoint), internalSize));
+
+  }
 }
