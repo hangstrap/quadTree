@@ -1,4 +1,4 @@
-name: quadTree
+name: quadtree
 description: A sample command-line application
-dependencies:
+dev_dependencies:
   unittest: any
