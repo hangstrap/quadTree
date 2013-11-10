@@ -78,8 +78,5 @@ class QuadTree<T extends Location>{
     childern.add(  new QuadTree<T>(  new Rectangle.fromPoints( bottomRight, midPoint), internalSize));
 
   }
-  String toString(){
-    StringBuffer sb = new StringBuffer("range=${range} #elements=${locations.length}");
-  }
   
 }
