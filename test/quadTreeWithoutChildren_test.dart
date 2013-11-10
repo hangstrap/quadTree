@@ -22,12 +22,12 @@ void main(){
     });
     test( "should add point that is inside range", (){
       Location inTheCenter = new Location(new Point( 0, 0));
-      underTest.add( inTheCenter );
+      expect( underTest.add( inTheCenter ), true);
       expect( underTest.locations, contains( inTheCenter));
     });        
     test( "should not add point that is outside range", (){
       Location outside = new Location(new Point( 2, 2));
-      underTest.add( outside );
+      expect( underTest.add( outside ), false);
       expect( underTest.locations, isNot( contains( outside)));
     });    
 

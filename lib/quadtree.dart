@@ -21,19 +21,29 @@ class QuadTree{
   
   QuadTree(this.range, [this.internalSize=10]);
   
-  void add( Location location){
-
-    if( range.containsPoint( location.getLocation())){
-      if( locations.length < internalSize){
-        locations.add( location);
-      }else{
-        if( childern.isEmpty){
-          _createChildren();
-        }
-        childern.forEach( (e)=> e.add( location));
-      }
+  bool add( Location location){
+    
+    if( ! range.containsPoint( location.getLocation())){
+      return false;
     }
+    //is there space in this location list?
+    if( locations.length < internalSize){
+      locations.add( location);
+
+    }else{
+      //Create the children if necesssary
+      if( childern.isEmpty){
+        _createChildren();
+      }
+      //Find a child to store the point
+      childern.firstWhere( (QuadTree child){ 
+        return child.add( location);
+      });
+    }
+ 
+    return true;
   }
+  
   void intersects( Rectangle rectangle, void f(Location location)){
     
     locations.forEach( (e){
@@ -41,6 +51,7 @@ class QuadTree{
         f(e);
       }   
     });
+    childern.forEach( (e){e.intersects( rectangle, f);});
   }
   
   void _createChildren(){
