@@ -8,9 +8,9 @@ void main(){
     Point p2 = new Point(1, 1);
     Rectangle quadTreeSize = new Rectangle.fromPoints(p2, p1);
 
-    QuadTree underTest;
+    QuadTree<Location> underTest;
     setUp( () {    
-      underTest = new QuadTree( quadTreeSize);     
+      underTest = new QuadTree<Location>( quadTreeSize);     
     });
    
     test( "should create range correctly", (){
@@ -42,7 +42,11 @@ void main(){
         
         List<Location> found = [];
         underTest.intersects( quadTreeSize, (e)=> found.add( e));
-        expect( found,contains( inTheCenter));
+        expect( found, contains( inTheCenter));
+        
+        //now check the list
+        List<Location> list=  underTest.intersectionList( quadTreeSize);
+        expect( list, contains( inTheCenter));
       });
       test( "should not find point when rectangle does not intersect point", (){
         List<Location> found = [];

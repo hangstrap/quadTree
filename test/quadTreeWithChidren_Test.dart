@@ -15,10 +15,10 @@ class QuadTreeLocation implements Location{
 void main(){
 
     
-    QuadTree underTest;
+    QuadTree<QuadTreeLocation> underTest;
     Rectangle range = new Rectangle.fromPoints( new Point( 0,0), new Point( 2,4));
     setUp((){
-      underTest = new QuadTree( range, 1);
+      underTest = new QuadTree<QuadTreeLocation>( range, 1);
     });
 
     group( "When there not enough locations to create children", (){

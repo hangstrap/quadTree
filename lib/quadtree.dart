@@ -12,16 +12,16 @@ class Location{
 }
 
 
-class QuadTree{
+class QuadTree<T extends Location>{
 
-  List<Location> locations = [];  
-  List<QuadTree> childern = [];
+  List<T> locations = [];  
+  List<QuadTree<T>> childern = [];
   Rectangle range;
   int internalSize;
   
   QuadTree(this.range, [this.internalSize=10]);
   
-  bool add( Location location){
+  bool add( T location){
     
     if( ! range.containsPoint( location.getLocation())){
       return false;
@@ -44,7 +44,7 @@ class QuadTree{
     return true;
   }
   
-  void intersects( Rectangle rectangle, void f(Location location)){
+  void intersects( Rectangle rectangle, void f(T location)){
     
     locations.forEach( (e){
       if( rectangle.containsPoint( e.getLocation())) {
@@ -52,6 +52,12 @@ class QuadTree{
       }   
     });
     childern.forEach( (e){e.intersects( rectangle, f);});
+  }
+  
+  List<T> intersectionList( Rectangle rectangle){
+    List<T> found =  [];
+    intersects(rectangle, (e)=> found.add( e));
+    return found;
   }
   
   void _createChildren(){
@@ -66,10 +72,14 @@ class QuadTree{
     Point bottomRight = range.bottomRight;
     
     
-    childern.add(  new QuadTree(  new Rectangle.fromPoints( topLeft, midPoint), internalSize));
-    childern.add(  new QuadTree(  new Rectangle.fromPoints( topRight, midPoint), internalSize));
-    childern.add(  new QuadTree(  new Rectangle.fromPoints( bottomLeft, midPoint), internalSize));
-    childern.add(  new QuadTree(  new Rectangle.fromPoints( bottomRight, midPoint), internalSize));
+    childern.add(  new QuadTree<T>(  new Rectangle.fromPoints( topLeft, midPoint), internalSize));
+    childern.add(  new QuadTree<T>(  new Rectangle.fromPoints( topRight, midPoint), internalSize));
+    childern.add(  new QuadTree<T>(  new Rectangle.fromPoints( bottomLeft, midPoint), internalSize));
+    childern.add(  new QuadTree<T>(  new Rectangle.fromPoints( bottomRight, midPoint), internalSize));
 
   }
+  String toString(){
+    StringBuffer sb = new StringBuffer("range=${range} #elements=${locations.length}");
+  }
+  
 }
