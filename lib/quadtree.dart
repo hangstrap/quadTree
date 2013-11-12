@@ -46,12 +46,16 @@ class QuadTree<T extends Location>{
   
   void intersects( Rectangle rectangle, void f(T location)){
     
-    locations.forEach( (e){
-      if( rectangle.containsPoint( e.getLocation())) {
-        f(e);
-      }   
-    });
-    childern.forEach( (e){e.intersects( rectangle, f);});
+    if( range.intersects( rectangle)){
+    
+      locations.forEach( (e){
+        if( rectangle.containsPoint( e.getLocation())) {
+          f(e);
+        }   
+      });
+      
+      childern.forEach( (e){e.intersects( rectangle, f);});
+    }
   }
   
   List<T> intersectionList( Rectangle rectangle){
