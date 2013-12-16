@@ -39,19 +39,23 @@ void main(){
         inTheCenter =  new Location(new Point( 0, 0));
         underTest.add( inTheCenter );
       });
-      test( "when search area equals range should find the point in center", (){
+      group( "when search area equals range should find the point in center", (){
         
         List<Location> found = [];
-        underTest.intersects( quadTreeSize, (e)=> found.add( e));
-        expect( found, contains( inTheCenter));
-        
-        //now check the list
-        List<Location> list=  underTest.intersectionListSync( quadTreeSize);
-        expect( list, contains( inTheCenter));
-        
-        //Now do it with a future
-        Future<  List<Location>> future =   underTest.intersectionList( quadTreeSize);
-        expect( future.then( (list)=> list.contains( inTheCenter)), completion( equals( true)));
+        test( "when called via intersect", (){
+          underTest.intersects( quadTreeSize, (e)=> found.add( e));
+          expect( found, contains( inTheCenter));
+        });
+        test( "when called vaid intersectListSync", (){
+          //now check the list
+          List<Location> list=  underTest.intersectionListSync( quadTreeSize);
+          expect( list, contains( inTheCenter));
+        });
+        test( "when called vaid intersectListFuture", (){        
+          //Now do it with a future
+          Future<  List<Location>> future =   underTest.intersectionList( quadTreeSize);
+          expect( future.then( (list)=> list.contains( inTheCenter)), completion( equals( true)));
+        });
       });
       
       
