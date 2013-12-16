@@ -1,6 +1,7 @@
 import 'package:quadtree/quadtree.dart';
 import 'package:unittest/unittest.dart';   
 import 'dart:math';
+import "dart:async";
 
 void main(){
   group( "Small tree without children", (){
@@ -38,16 +39,24 @@ void main(){
         inTheCenter =  new Location(new Point( 0, 0));
         underTest.add( inTheCenter );
       });
-      test( "when search area equals range should find the point in center", (){
+      solo_test( "when search area equals range should find the point in center", (){
         
         List<Location> found = [];
         underTest.intersects( quadTreeSize, (e)=> found.add( e));
         expect( found, contains( inTheCenter));
         
         //now check the list
-        List<Location> list=  underTest.intersectionList( quadTreeSize);
+        List<Location> list=  underTest.intersectionListSync( quadTreeSize);
         expect( list, contains( inTheCenter));
+        
+        //Now do it with a future
+        Future<  List<Location>> future =   underTest.intersectionList( quadTreeSize);
+        
+        expect( future.then( (list)=> list.contains( inTheCenter)), completion( equals( true)));
       });
+      
+      
+      
       test( "should not find point when rectangle does not intersect point", (){
         List<Location> found = [];
         Rectangle onTheSide = new Rectangle( .5, .5, 1, 1);

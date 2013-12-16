@@ -1,6 +1,7 @@
 library quadtree;
 
 import "dart:math";
+import "dart:async";
 
 
 class Location{
@@ -44,6 +45,7 @@ class QuadTree<T extends Location>{
     return true;
   }
   
+  
   void intersects( Rectangle rectangle, void f(T location)){
     
     if( range.intersects( rectangle)){
@@ -58,10 +60,18 @@ class QuadTree<T extends Location>{
     }
   }
   
-  List<T> intersectionList( Rectangle rectangle){
+
+  
+  List<T> intersectionListSync( Rectangle rectangle){
     List<T> found =  [];
     intersects(rectangle, (e)=> found.add( e));
     return found;
+  }
+  
+  Future<List<T>> intersectionList( Rectangle rectangle){
+    Completer completer = new Completer();
+    completer.complete( intersectionListSync( rectangle));
+    return completer.future;
   }
   
   void _createChildren(){
