@@ -39,7 +39,7 @@ void main(){
         inTheCenter =  new Location(new Point( 0, 0));
         underTest.add( inTheCenter );
       });
-      solo_test( "when search area equals range should find the point in center", (){
+      test( "when search area equals range should find the point in center", (){
         
         List<Location> found = [];
         underTest.intersects( quadTreeSize, (e)=> found.add( e));
@@ -51,7 +51,6 @@ void main(){
         
         //Now do it with a future
         Future<  List<Location>> future =   underTest.intersectionList( quadTreeSize);
-        
         expect( future.then( (list)=> list.contains( inTheCenter)), completion( equals( true)));
       });
       
