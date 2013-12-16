@@ -1,4 +1,4 @@
 name: quadtree
-description: A sample command-line application
+description: A library that implements a QuadTree
 dev_dependencies:
   unittest: any
